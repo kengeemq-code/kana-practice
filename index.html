@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
-    <title>五十音练习 · 分区学习 · 错误高亮</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>五十音练习 · 移动优化版</title>
     <style>
         * {
             margin: 0;
@@ -18,83 +18,77 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 12px;
         }
 
         .practice-container {
             max-width: 900px;
             width: 100%;
             background-color: white;
-            border-radius: 28px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-            padding: 32px 28px;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            padding: 20px 16px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 18px;
             border: 1px solid #e9ecef;
         }
 
+        /* 词库选择器区域 - 移动端紧凑 */
         .selector-area {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             flex-wrap: wrap;
-            gap: 16px;
+            gap: 12px;
             background-color: #f8f9fa;
-            padding: 16px 20px;
+            padding: 12px 16px;
             border-radius: 16px;
             border: 1px solid #e2e6ea;
         }
 
         .selector-label {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #1e3a5f;
             background-color: #e4ebf5;
-            padding: 6px 18px;
+            padding: 4px 14px;
             border-radius: 30px;
+            white-space: nowrap;
         }
 
         .word-selector {
-            flex: 1 1 200px;
-            padding: 12px 20px;
-            font-size: 1.2rem;
+            flex: 1 1 160px;
+            padding: 8px 12px;
+            font-size: 1rem;
             border: 2px solid #ced4da;
             border-radius: 12px;
             background: white;
             font-weight: 500;
             color: #1e2a3a;
             outline: none;
-            cursor: pointer;
         }
 
-        .word-selector:focus {
-            border-color: #4c6ef5;
-            box-shadow: 0 0 0 3px rgba(76,110,245,0.1);
-        }
-
+        /* 显示区：假名 + 倒计时 - 垂直排列 */
         .display-area {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .kana-display {
             background-color: #f1f3f5;
-            padding: 24px 36px;
+            padding: 16px 24px;
             border-radius: 20px;
             border: 1px solid #dee2e6;
-            font-size: 5.5rem;
+            font-size: 5rem;
             font-weight: 600;
             color: #212529;
             line-height: 1;
-            min-width: 200px;
+            min-width: 160px;
             text-align: center;
             font-family: 'Noto Serif JP', 'MS Mincho', serif;
             letter-spacing: 4px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .timer-display {
@@ -102,121 +96,93 @@
             color: #f1c40f;
             font-size: 2.5rem;
             font-weight: 800;
-            padding: 12px 30px;
+            padding: 10px 24px;
             border-radius: 20px;
             font-family: 'Courier New', monospace;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            letter-spacing: 4px;
             border: 3px solid #f39c12;
             min-width: 120px;
             text-align: center;
         }
 
+        /* 输入区 */
         .input-section {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             background-color: #f8f9fa;
-            padding: 20px;
+            padding: 16px;
             border-radius: 16px;
             border: 1px solid #e2e6ea;
         }
 
         .input-label {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #2b3a4a;
-            margin-left: 8px;
+            margin-left: 4px;
         }
 
         .input-row {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 14px;
+            gap: 10px;
         }
 
         .romaji-input {
-            flex: 3 1 220px;
-            padding: 14px 20px;
-            font-size: 1.6rem;
+            flex: 1 1 180px;
+            padding: 12px 16px;
+            font-size: 1.4rem;
             border: 2px solid #ced4da;
             border-radius: 12px;
             background: white;
             text-align: center;
-            font-weight: 500;
-            color: #1e2a3a;
-            letter-spacing: 1px;
-            outline: none;
-            transition: 0.15s;
-        }
-
-        .romaji-input:focus {
-            border-color: #4c6ef5;
-            box-shadow: 0 0 0 3px rgba(76,110,245,0.1);
         }
 
         .confirm-btn {
-            flex: 1 1 100px;
-            padding: 14px 18px;
-            font-size: 1.6rem;
+            flex: 0 0 auto;
+            padding: 12px 20px;
+            font-size: 1.4rem;
             background-color: #4c6ef5;
             border: none;
             border-radius: 12px;
             color: white;
             font-weight: 600;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.1s;
             border-bottom: 3px solid #364fc7;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
         }
 
-        .confirm-btn:active {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-        }
-
-        .confirm-btn:hover {
-            background-color: #5f7cf5;
-        }
-
+        /* 统计区 - 垂直堆叠 */
         .stats-panel {
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 12px;
             background-color: #f8f9fa;
-            padding: 12px 20px;
+            padding: 16px;
             border-radius: 16px;
             border: 1px solid #e9ecef;
         }
 
         .stats-left {
             display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
         }
 
         .result-area {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             padding: 6px 16px;
             background-color: white;
             border-radius: 40px;
             border: 1px solid #dee2e6;
-            color: #2b3a4a;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);
         }
 
         .counter-area {
             display: flex;
             gap: 20px;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             background-color: white;
-            padding: 6px 22px;
+            padding: 6px 18px;
             border-radius: 40px;
             border: 1px solid #dee2e6;
         }
@@ -228,7 +194,7 @@
         }
 
         .counter-num {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
         }
 
@@ -236,117 +202,97 @@
         .counter-item:nth-child(2) .counter-num { color: #b45b0f; }
         .counter-item:nth-child(3) .counter-num { color: #a12a2a; }
 
-        .stats-right .end-btn {
+        .stats-right {
+            text-align: right;
+        }
+
+        .end-btn {
             background-color: #e9ecef;
             border: 1px solid #b6c4d1;
             color: #2e4a6a;
             padding: 8px 22px;
             border-radius: 30px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.06s;
         }
 
-        .stats-right .end-btn:hover {
-            background-color: #d0d9e2;
-        }
-
-        .stats-right .end-btn:active {
-            transform: translateY(2px);
-        }
-
+        /* 反馈区 */
         .feedback-section {
             background-color: #f1f5f9;
             border-radius: 20px;
-            padding: 22px;
+            padding: 18px;
             border: 1px solid #dbe4ee;
         }
 
         .feedback-header {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
+            flex-direction: column;
+            align-items: stretch;
             gap: 12px;
+            margin-bottom: 16px;
         }
 
         .feedback-title {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #1e3a5f;
             background-color: #e4ebf5;
-            padding: 6px 18px;
+            padding: 4px 16px;
             border-radius: 30px;
-            letter-spacing: 1px;
+            align-self: flex-start;
         }
 
         .btn-group {
             display: flex;
-            gap: 12px;
-            align-items: center;
+            gap: 10px;
+            justify-content: flex-end;
         }
 
         .learn-btn, .clear-btn {
             background-color: #e9ecef;
             border: 1px solid #b6c4d1;
             color: #2e4a6a;
-            padding: 6px 18px;
+            padding: 6px 16px;
             border-radius: 30px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.06s;
-        }
-
-        .learn-btn:hover, .clear-btn:hover {
-            background-color: #d0d9e2;
-        }
-
-        .learn-btn:active, .clear-btn:active {
-            transform: translateY(2px);
         }
 
         .feedback-list {
-            max-height: 180px;
+            max-height: 150px;
             overflow-y: auto;
-            padding-right: 4px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            align-content: flex-start;
+            gap: 8px;
         }
 
         .badge-error {
             background-color: #fff4e6;
             color: #3a2c1b;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 30px 8px 30px 8px;
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.1rem;
             border: 1px solid #ffc9a4;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            gap: 6px;
         }
 
         .badge-error span {
-            font-size: 1rem;
+            font-size: 0.8rem;
             background-color: #ffe8d4;
-            padding: 2px 12px;
+            padding: 2px 8px;
             border-radius: 30px;
-            color: #7a4d2e;
-            font-weight: 500;
         }
 
-        /* 学习区样式 */
+        /* 学习区 */
         .learning-section {
-            margin-top: 20px;
+            margin-top: 16px;
             background-color: #ffffff;
             border-radius: 16px;
-            padding: 20px;
+            padding: 16px;
             border: 2px dashed #b0c4de;
             display: none;
         }
@@ -356,28 +302,35 @@
         }
 
         .learning-part {
-            margin-bottom: 28px;
+            margin-bottom: 20px;
         }
 
         .part-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #1e3a5f;
             border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 6px;
-            margin-bottom: 16px;
+            padding-bottom: 4px;
+            margin-bottom: 12px;
         }
 
+        /* 网格：移动端默认1列，稍大屏幕2列 */
         .kana-rows {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        @media (min-width: 400px) {
+            .kana-rows {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .kana-row {
             background-color: #f8fafc;
-            border-radius: 12px;
-            padding: 8px 12px;
+            border-radius: 10px;
+            padding: 6px 10px;
             display: flex;
             align-items: center;
             justify-content: space-around;
@@ -386,52 +339,50 @@
         }
 
         .kana-row.highlight {
-            background-color: #fee2e2;  /* 浅红色高亮 */
+            background-color: #fee2e2;
             border: 2px solid #ef4444;
-            font-weight: 600;
         }
 
         .kana-row .hira {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-family: 'Noto Serif JP', serif;
-            min-width: 40px;
+            min-width: 36px;
             text-align: center;
         }
 
         .kana-row .kata {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-family: 'Noto Serif JP', serif;
-            min-width: 40px;
+            min-width: 36px;
             text-align: center;
         }
 
         .kana-row .roma {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #334155;
             background-color: #e9eef3;
-            padding: 2px 10px;
+            padding: 2px 8px;
             border-radius: 20px;
-            min-width: 50px;
+            min-width: 45px;
             text-align: center;
         }
 
         .guide-note {
-            margin-top: 18px;
+            margin-top: 16px;
             color: #4f6f8f;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-top: 1px dashed #bacad9;
-            padding-top: 14px;
+            padding-top: 12px;
         }
 
-        @media (max-width: 600px) {
-            .display-area { flex-direction: column; }
-            .kana-display { font-size: 4rem; }
-            .timer-display { font-size: 2rem; padding: 8px 20px; }
-            .stats-left { flex-direction: column; align-items: flex-start; }
-            .stats-panel { flex-direction: column; gap: 12px; align-items: stretch; }
-            .stats-right { text-align: right; }
-            .feedback-header { flex-direction: column; align-items: stretch; }
-            .btn-group { justify-content: flex-end; }
+        /* 针对小屏幕调整字体大小 */
+        @media (max-width: 380px) {
+            .kana-display { font-size: 4rem; padding: 12px 16px; }
+            .timer-display { font-size: 2rem; padding: 6px 16px; }
+            .romaji-input { font-size: 1.2rem; }
+            .confirm-btn { font-size: 1.2rem; padding: 10px 16px; }
+            .counter-area { gap: 12px; }
+            .counter-num { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -447,7 +398,7 @@
             </select>
         </div>
 
-        <!-- 显示区：假名 + 倒计时 -->
+        <!-- 显示区：假名 + 倒计时 (垂直排列) -->
         <div class="display-area">
             <div class="kana-display" id="kanaDisplay">あ</div>
             <div class="timer-display" id="timerDisplay">3s</div>
@@ -462,7 +413,7 @@
             </div>
         </div>
 
-        <!-- 统计区 -->
+        <!-- 统计区 (垂直) -->
         <div class="stats-panel">
             <div class="stats-left">
                 <div class="result-area" id="resultMessage">✨ 输入罗马音 ✨</div>
@@ -493,7 +444,7 @@
             </div>
         </div>
 
-        <!-- 学习区（分区显示） -->
+        <!-- 学习区 -->
         <div class="learning-section" id="learningSection">
             <!-- 清音部分 -->
             <div class="learning-part" id="seionPart"></div>
@@ -509,7 +460,6 @@
             "use strict";
 
             // ---------- 📘 基础数据 ----------
-            // 清音平假名 (按五十音顺序)
             const seionHiragana = [
                 { char: 'あ', roma: ['a'] }, { char: 'い', roma: ['i'] }, { char: 'う', roma: ['u'] }, { char: 'え', roma: ['e'] }, { char: 'お', roma: ['o'] },
                 { char: 'か', roma: ['ka'] }, { char: 'き', roma: ['ki'] }, { char: 'く', roma: ['ku'] }, { char: 'け', roma: ['ke'] }, { char: 'こ', roma: ['ko'] },
@@ -522,7 +472,6 @@
                 { char: 'ら', roma: ['ra'] }, { char: 'り', roma: ['ri'] }, { char: 'る', roma: ['ru'] }, { char: 'れ', roma: ['re'] }, { char: 'ろ', roma: ['ro'] },
                 { char: 'わ', roma: ['wa'] }, { char: 'を', roma: ['wo', 'o'] }, { char: 'ん', roma: ['n', 'nn'] }
             ];
-            // 清音片假名 (顺序对应)
             const seionKatakana = [
                 { char: 'ア', roma: ['a'] }, { char: 'イ', roma: ['i'] }, { char: 'ウ', roma: ['u'] }, { char: 'エ', roma: ['e'] }, { char: 'オ', roma: ['o'] },
                 { char: 'カ', roma: ['ka'] }, { char: 'キ', roma: ['ki'] }, { char: 'ク', roma: ['ku'] }, { char: 'ケ', roma: ['ke'] }, { char: 'コ', roma: ['ko'] },
@@ -536,7 +485,6 @@
                 { char: 'ワ', roma: ['wa'] }, { char: 'ヲ', roma: ['wo', 'o'] }, { char: 'ン', roma: ['n', 'nn'] }
             ];
 
-            // 浊音/半浊音平假名
             const dakuonHiragana = [
                 { char: 'が', roma: ['ga'] }, { char: 'ぎ', roma: ['gi'] }, { char: 'ぐ', roma: ['gu'] }, { char: 'げ', roma: ['ge'] }, { char: 'ご', roma: ['go'] },
                 { char: 'ざ', roma: ['za'] }, { char: 'じ', roma: ['ji', 'zi'] }, { char: 'ず', roma: ['zu'] }, { char: 'ぜ', roma: ['ze'] }, { char: 'ぞ', roma: ['zo'] },
@@ -544,7 +492,6 @@
                 { char: 'ば', roma: ['ba'] }, { char: 'び', roma: ['bi'] }, { char: 'ぶ', roma: ['bu'] }, { char: 'べ', roma: ['be'] }, { char: 'ぼ', roma: ['bo'] },
                 { char: 'ぱ', roma: ['pa'] }, { char: 'ぴ', roma: ['pi'] }, { char: 'ぷ', roma: ['pu'] }, { char: 'ぺ', roma: ['pe'] }, { char: 'ぽ', roma: ['po'] }
             ];
-            // 浊音/半浊音片假名
             const dakuonKatakana = [
                 { char: 'ガ', roma: ['ga'] }, { char: 'ギ', roma: ['gi'] }, { char: 'グ', roma: ['gu'] }, { char: 'ゲ', roma: ['ge'] }, { char: 'ゴ', roma: ['go'] },
                 { char: 'ザ', roma: ['za'] }, { char: 'ジ', roma: ['ji', 'zi'] }, { char: 'ズ', roma: ['zu'] }, { char: 'ゼ', roma: ['ze'] }, { char: 'ゾ', roma: ['zo'] },
@@ -553,7 +500,6 @@
                 { char: 'パ', roma: ['pa'] }, { char: 'ピ', roma: ['pi'] }, { char: 'プ', roma: ['pu'] }, { char: 'ペ', roma: ['pe'] }, { char: 'ポ', roma: ['po'] }
             ];
 
-            // 拗音平假名
             const youonHiragana = [
                 { char: 'きゃ', roma: ['kya'] }, { char: 'きゅ', roma: ['kyu'] }, { char: 'きょ', roma: ['kyo'] },
                 { char: 'しゃ', roma: ['sha', 'sya'] }, { char: 'しゅ', roma: ['shu', 'syu'] }, { char: 'しょ', roma: ['sho', 'syo'] },
@@ -567,7 +513,6 @@
                 { char: 'びゃ', roma: ['bya'] }, { char: 'びゅ', roma: ['byu'] }, { char: 'びょ', roma: ['byo'] },
                 { char: 'ぴゃ', roma: ['pya'] }, { char: 'ぴゅ', roma: ['pyu'] }, { char: 'ぴょ', roma: ['pyo'] }
             ];
-            // 拗音片假名
             const youonKatakana = [
                 { char: 'キャ', roma: ['kya'] }, { char: 'キュ', roma: ['kyu'] }, { char: 'キョ', roma: ['kyo'] },
                 { char: 'シャ', roma: ['sha', 'sya'] }, { char: 'シュ', roma: ['shu', 'syu'] }, { char: 'ショ', roma: ['sho', 'syo'] },
@@ -582,7 +527,7 @@
                 { char: 'ピャ', roma: ['pya'] }, { char: 'ピュ', roma: ['pyu'] }, { char: 'ピョ', roma: ['pyo'] }
             ];
 
-            // 构建配对数组：每个元素 { hira, kata, roma } (使用平假名的第一个罗马音作为主罗马音)
+            // 构建配对数组
             const seionPairs = seionHiragana.map((h, idx) => ({
                 hira: h.char,
                 kata: seionKatakana[idx].char,
@@ -601,7 +546,6 @@
                 roma: h.roma[0]
             }));
 
-            // 合并词库用于练习
             const SEION = [...seionHiragana, ...seionKatakana];
             const DAKUON = [...dakuonHiragana, ...dakuonKatakana];
             const YOUON = [...youonHiragana, ...youonKatakana];
@@ -612,7 +556,7 @@
                 youon: [...SEION, ...DAKUON, ...YOUON]
             };
 
-            // ---------- DOM 元素 ----------
+            // ---------- DOM ----------
             const wordSelector = document.getElementById('wordSelector');
             const kanaDisplay = document.getElementById('kanaDisplay');
             const romajiInput = document.getElementById('romajiInput');
@@ -634,12 +578,11 @@
             // ---------- 全局状态 ----------
             let currentKana = { char: 'あ', roma: ['a'] };
             let perfect = 0, good = 0, bad = 0;
-            const charStats = new Map();          // 每个字符的正确/错误统计
-            const errorChars = new Set();           // 错误字符集合（用于高亮）
+            const charStats = new Map();
+            const errorChars = new Set();
             let remainingChars = [];
             let currentLibrary = SEION;
 
-            // 倒计时相关
             let timerInterval = null;
             let timeoutId = null;
             let isTimeout = false;
@@ -647,12 +590,6 @@
 
             // ---------- 学习区渲染 ----------
             function renderLearningSection() {
-                // 清空各分区
-                seionPart.innerHTML = '';
-                dakuonPart.innerHTML = '';
-                youonPart.innerHTML = '';
-
-                // 渲染清音
                 seionPart.innerHTML = '<div class="part-title">清音</div><div class="kana-rows" id="seionRows"></div>';
                 const seionRows = document.getElementById('seionRows');
                 seionPairs.forEach(p => {
@@ -669,7 +606,6 @@
                     seionRows.appendChild(row);
                 });
 
-                // 渲染浊音
                 dakuonPart.innerHTML = '<div class="part-title">浊音 / 半浊音</div><div class="kana-rows" id="dakuonRows"></div>';
                 const dakuonRows = document.getElementById('dakuonRows');
                 dakuonPairs.forEach(p => {
@@ -686,7 +622,6 @@
                     dakuonRows.appendChild(row);
                 });
 
-                // 渲染拗音
                 youonPart.innerHTML = '<div class="part-title">拗音</div><div class="kana-rows" id="youonRows"></div>';
                 const youonRows = document.getElementById('youonRows');
                 youonPairs.forEach(p => {
@@ -703,11 +638,8 @@
                     youonRows.appendChild(row);
                 });
             }
-
-            // 初始渲染学习区
             renderLearningSection();
 
-            // 学习区显示/隐藏
             learnBtn.addEventListener('click', () => {
                 learningSection.classList.toggle('visible');
             });
@@ -790,7 +722,6 @@
                 else stat.wrong += 1;
             }
 
-            // 添加错误记录并更新错误集合
             function addErrorRecord(char, correctRoma) {
                 errorChars.add(char);
                 const badge = document.createElement('div');
@@ -801,18 +732,15 @@
                 badge.appendChild(mark);
                 feedbackList.appendChild(badge);
                 feedbackList.scrollTop = feedbackList.scrollHeight;
-                // 重新渲染学习区以更新高亮
                 renderLearningSection();
             }
 
-            // 清空错误记录
             function clearFeedback() {
                 feedbackList.innerHTML = '';
                 errorChars.clear();
-                renderLearningSection(); // 移除所有高亮
+                renderLearningSection();
             }
 
-            // 结束练习：弹窗显示错误字符 + 清零计数和统计
             function showErrorSummaryAndReset() {
                 const errorEntries = [];
                 for (let [char, stat] of charStats.entries()) {
@@ -832,7 +760,6 @@
                     alert(message);
                 }
 
-                // 清零计数和统计 (但不清除错误列表)
                 perfect = 0;
                 good = 0;
                 bad = 0;
@@ -859,7 +786,7 @@
                     bad++;
                     resultMessage.textContent = '❌ 错误 (B)';
                     resultMessage.style.color = '#c92a2a';
-                    addErrorRecord(currentKana.char, currentKana.roma[0]);  // 添加错误记录并更新高亮
+                    addErrorRecord(currentKana.char, currentKana.roma[0]);
                     updateCharStats(currentKana.char, false);
                 }
 
@@ -875,7 +802,7 @@
                 perfect = 0; good = 0; bad = 0;
                 updateCounters();
                 charStats.clear();
-                clearFeedback();        // 清空错误记录列表、错误集合、并重新渲染学习区（移除高亮）
+                clearFeedback();
                 resultMessage.textContent = '✨ 输入罗马音 ✨';
                 resultMessage.style.color = '#2b3a4a';
                 resetRemainingChars();
