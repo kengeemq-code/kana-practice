@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-    <title>五十音练习 · 移动优化版</title>
+    <title>五十音练习 · 学习区新布局</title>
     <style>
         * {
             margin: 0;
@@ -34,7 +34,6 @@
             border: 1px solid #e9ecef;
         }
 
-        /* 词库选择器区域 - 移动端紧凑 */
         .selector-area {
             display: flex;
             align-items: center;
@@ -68,7 +67,6 @@
             outline: none;
         }
 
-        /* 显示区：假名 + 倒计时 - 垂直排列 */
         .display-area {
             display: flex;
             flex-direction: column;
@@ -104,7 +102,6 @@
             text-align: center;
         }
 
-        /* 输入区 */
         .input-section {
             display: flex;
             flex-direction: column;
@@ -124,13 +121,13 @@
 
         .input-row {
             display: flex;
-            flex-wrap: nowrap;  /* 禁止换行，保证在一行内 */
+            flex-wrap: nowrap;
             gap: 8px;
         }
 
         .romaji-input {
-            flex: 1 1 120px;    /* 缩小基础宽度，让输入框更窄 */
-            min-width: 100px;    /* 确保太小时仍有可点击区域 */
+            flex: 1 1 120px;
+            min-width: 100px;
             padding: 10px 12px;
             font-size: 1.3rem;
             border: 2px solid #ced4da;
@@ -141,14 +138,8 @@
 
         .confirm-btn {
             flex: 0 0 auto;
-            padding: 10px 18px;  /* 按钮稍微缩小 */
+            padding: 10px 18px;
             font-size: 1.3rem;
-        }
-
-        .confirm-btn {
-            flex: 0 0 auto;
-            padding: 12px 20px;
-            font-size: 1.4rem;
             background-color: #4c6ef5;
             border: none;
             border-radius: 12px;
@@ -157,7 +148,6 @@
             border-bottom: 3px solid #364fc7;
         }
 
-        /* 统计区 - 垂直堆叠 */
         .stats-panel {
             display: flex;
             flex-direction: column;
@@ -209,11 +199,7 @@
         .counter-item:nth-child(2) .counter-num { color: #b45b0f; }
         .counter-item:nth-child(3) .counter-num { color: #a12a2a; }
 
-        .stats-right {
-            text-align: right;
-        }
-
-        .end-btn {
+        .stats-right .end-btn {
             background-color: #e9ecef;
             border: 1px solid #b6c4d1;
             color: #2e4a6a;
@@ -224,7 +210,6 @@
             cursor: pointer;
         }
 
-        /* 反馈区 */
         .feedback-section {
             background-color: #f1f5f9;
             border-radius: 20px;
@@ -285,8 +270,12 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
+            transition: background-color 0.1s;
         }
-
+        .badge-error:hover {
+            background-color: #ffe0c0;
+        }
         .badge-error span {
             font-size: 0.8rem;
             background-color: #ffe8d4;
@@ -294,7 +283,6 @@
             border-radius: 30px;
         }
 
-        /* 学习区 */
         .learning-section {
             margin-top: 16px;
             background-color: #ffffff;
@@ -303,7 +291,6 @@
             border: 2px dashed #b0c4de;
             display: none;
         }
-
         .learning-section.visible {
             display: block;
         }
@@ -321,54 +308,54 @@
             margin-bottom: 12px;
         }
 
-        /* 网格：移动端默认1列，稍大屏幕2列 */
+        /* 每行强制5列 */
         .kana-rows {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
         }
 
-        @media (min-width: 400px) {
-            .kana-rows {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        .kana-rows {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);  /* 固定5列 */
-            gap: 6px;  /* 缩小间隙 */
-        }
-
+        /* 每个单元格垂直排列：平假名、片假名、罗马音 */
         .kana-row {
             background-color: #f8fafc;
-            border-radius: 8px;
-            padding: 4px 2px;  /* 缩小内边距 */
+            border-radius: 10px;
+            padding: 6px 2px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-around;
+            justify-content: center;
             border: 1px solid #d1d9e6;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, border 0.2s;
+        }
+        .kana-row.highlight {
+            background-color: #fee2e2;
+            border: 2px solid #ef4444;
+        }
+        .kana-row.highlight-click {
+            background-color: #fef08a;  /* 临时点击高亮 */
+            border: 2px solid #f59e0b;
+            transition: background-color 0.3s;
         }
 
         .kana-row .hira {
-            font-size: 1.2rem;  /* 缩小字体 */
-            min-width: 28px;
+            font-size: 1.3rem;
+            font-family: 'Noto Serif JP', serif;
+            line-height: 1.2;
         }
-
         .kana-row .kata {
-            font-size: 1.2rem;
-            min-width: 28px;
+            font-size: 1.3rem;
+            font-family: 'Noto Serif JP', serif;
+            line-height: 1.2;
         }
-
         .kana-row .roma {
-            font-size: 0.7rem;  /* 缩小罗马音字体 */
-            padding: 2px 4px;
-            min-width: 35px;
+            font-size: 0.7rem;
+            color: #334155;
+            background-color: #e9eef3;
+            padding: 2px 6px;
+            border-radius: 12px;
+            margin-top: 2px;
             white-space: nowrap;
         }
-
-/* 移除原有的媒体查询，因为固定5列不再需要 */
 
         .guide-note {
             margin-top: 16px;
@@ -378,12 +365,11 @@
             padding-top: 12px;
         }
 
-        /* 针对小屏幕调整字体大小 */
         @media (max-width: 380px) {
             .kana-display { font-size: 4rem; padding: 12px 16px; }
             .timer-display { font-size: 2rem; padding: 6px 16px; }
             .romaji-input { font-size: 1.2rem; }
-            .confirm-btn { font-size: 1.2rem; padding: 10px 16px; }
+            .confirm-btn { font-size: 1.2rem; padding: 8px 14px; }
             .counter-area { gap: 12px; }
             .counter-num { font-size: 1.4rem; }
         }
@@ -401,7 +387,7 @@
             </select>
         </div>
 
-        <!-- 显示区：假名 + 倒计时 (垂直排列) -->
+        <!-- 显示区：假名 + 倒计时 -->
         <div class="display-area">
             <div class="kana-display" id="kanaDisplay">あ</div>
             <div class="timer-display" id="timerDisplay">3s</div>
@@ -416,7 +402,7 @@
             </div>
         </div>
 
-        <!-- 统计区 (垂直) -->
+        <!-- 统计区 -->
         <div class="stats-panel">
             <div class="stats-left">
                 <div class="result-area" id="resultMessage">✨ 输入罗马音 ✨</div>
@@ -591,8 +577,17 @@
             let isTimeout = false;
             const INIT_TIME = 3;
 
+            // 映射：假名 -> 对应的DOM行 (用于点击定位)
+            const hiraToRow = new Map();
+            const kataToRow = new Map();
+
             // ---------- 学习区渲染 ----------
             function renderLearningSection() {
+                // 清空映射
+                hiraToRow.clear();
+                kataToRow.clear();
+
+                // 清音
                 seionPart.innerHTML = '<div class="part-title">清音</div><div class="kana-rows" id="seionRows"></div>';
                 const seionRows = document.getElementById('seionRows');
                 seionPairs.forEach(p => {
@@ -601,14 +596,18 @@
                     if (errorChars.has(p.hira) || errorChars.has(p.kata)) {
                         row.classList.add('highlight');
                     }
+                    row.setAttribute('data-hira', p.hira);
                     row.innerHTML = `
                         <span class="hira">${p.hira}</span>
                         <span class="kata">${p.kata}</span>
                         <span class="roma">${p.roma}</span>
                     `;
                     seionRows.appendChild(row);
+                    hiraToRow.set(p.hira, row);
+                    kataToRow.set(p.kata, row);
                 });
 
+                // 浊音
                 dakuonPart.innerHTML = '<div class="part-title">浊音 / 半浊音</div><div class="kana-rows" id="dakuonRows"></div>';
                 const dakuonRows = document.getElementById('dakuonRows');
                 dakuonPairs.forEach(p => {
@@ -617,14 +616,18 @@
                     if (errorChars.has(p.hira) || errorChars.has(p.kata)) {
                         row.classList.add('highlight');
                     }
+                    row.setAttribute('data-hira', p.hira);
                     row.innerHTML = `
                         <span class="hira">${p.hira}</span>
                         <span class="kata">${p.kata}</span>
                         <span class="roma">${p.roma}</span>
                     `;
                     dakuonRows.appendChild(row);
+                    hiraToRow.set(p.hira, row);
+                    kataToRow.set(p.kata, row);
                 });
 
+                // 拗音
                 youonPart.innerHTML = '<div class="part-title">拗音</div><div class="kana-rows" id="youonRows"></div>';
                 const youonRows = document.getElementById('youonRows');
                 youonPairs.forEach(p => {
@@ -633,14 +636,19 @@
                     if (errorChars.has(p.hira) || errorChars.has(p.kata)) {
                         row.classList.add('highlight');
                     }
+                    row.setAttribute('data-hira', p.hira);
                     row.innerHTML = `
                         <span class="hira">${p.hira}</span>
                         <span class="kata">${p.kata}</span>
                         <span class="roma">${p.roma}</span>
                     `;
                     youonRows.appendChild(row);
+                    hiraToRow.set(p.hira, row);
+                    kataToRow.set(p.kata, row);
                 });
             }
+
+            // 初始化渲染
             renderLearningSection();
 
             learnBtn.addEventListener('click', () => {
@@ -725,6 +733,7 @@
                 else stat.wrong += 1;
             }
 
+            // 添加错误记录，并为标签添加点击事件
             function addErrorRecord(char, correctRoma) {
                 errorChars.add(char);
                 const badge = document.createElement('div');
@@ -733,15 +742,33 @@
                 const mark = document.createElement('span');
                 mark.textContent = '✘';
                 badge.appendChild(mark);
+                // 点击标签定位到学习区对应行
+                badge.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // 根据字符查找对应的行
+                    let targetRow = hiraToRow.get(char) || kataToRow.get(char);
+                    if (targetRow) {
+                        // 滚动到该行
+                        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // 添加临时高亮类
+                        targetRow.classList.add('highlight-click');
+                        setTimeout(() => {
+                            targetRow.classList.remove('highlight-click');
+                        }, 1000);
+                    } else {
+                        // 如果没找到（可能因为词库切换导致映射改变），但通常不会
+                        console.warn('未找到对应字符行', char);
+                    }
+                });
                 feedbackList.appendChild(badge);
                 feedbackList.scrollTop = feedbackList.scrollHeight;
-                renderLearningSection();
+                renderLearningSection(); // 重新渲染学习区以应用错误高亮
             }
 
             function clearFeedback() {
                 feedbackList.innerHTML = '';
                 errorChars.clear();
-                renderLearningSection();
+                renderLearningSection(); // 移除所有错误高亮
             }
 
             function showErrorSummaryAndReset() {
